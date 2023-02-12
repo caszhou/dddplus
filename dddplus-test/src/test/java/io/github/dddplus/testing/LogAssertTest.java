@@ -1,17 +1,17 @@
 package io.github.dddplus.testing;
 
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
-
-import java.io.IOException;
-
 import static io.github.dddplus.testing.LogAssert.assertContains;
 import static io.github.dddplus.testing.LogAssert.assertNotContains;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
+
+import org.junit.Test;
+
+import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 public class LogAssertTest {
-
     @Test
     public void contains() throws IOException {
         log.info("Hello");
@@ -27,13 +27,10 @@ public class LogAssertTest {
         log.info("a");
         log.info("b");
         assertContains("a", "b");
-
         try {
             assertContains("a");
             fail();
         } catch (AssertionError expected) {
-
         }
     }
-
 }

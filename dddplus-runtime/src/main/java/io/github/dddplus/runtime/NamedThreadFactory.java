@@ -13,10 +13,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 class NamedThreadFactory implements ThreadFactory {
     static final AtomicInteger poolCount = new AtomicInteger(0);
+
     private final AtomicInteger threadCount = new AtomicInteger(1);
 
     private final ThreadGroup group;
+
     private final String namePrefix;
+
     private final boolean daemon;
 
     NamedThreadFactory(String prefix, boolean daemon) {

@@ -5,6 +5,11 @@
  */
 package io.github.dddplus.runtime.registry;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.validation.constraints.NotNull;
+
 import io.github.dddplus.annotation.Policy;
 import io.github.dddplus.ext.IDomainExtension;
 import io.github.dddplus.ext.IExtPolicy;
@@ -13,14 +18,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotNull;
-import java.util.HashMap;
-import java.util.Map;
-
 @ToString
 @Getter(AccessLevel.PACKAGE)
 class PolicyDef implements IRegistryAware {
-
     private IExtPolicy policyBean;
 
     private Class<? extends IDomainExtension> extClazz;
@@ -41,7 +41,7 @@ class PolicyDef implements IRegistryAware {
         if (!(bean instanceof IExtPolicy)) {
             throw BootstrapException.ofMessage(bean.getClass().getCanonicalName(), " MUST implements IExtPolicy");
         }
-        this.policyBean = (IExtPolicy) bean;
+        this.policyBean = (IExtPolicy)bean;
     }
 
     void registerExtensionDef(ExtensionDef extensionDef) {
@@ -55,7 +55,6 @@ class PolicyDef implements IRegistryAware {
         if (extensionCode == null) {
             return null;
         }
-
         return extensionDefMap.get(extensionCode);
     }
 

@@ -5,11 +5,12 @@
  */
 package io.github.dddplus.annotation;
 
-import io.github.dddplus.ext.IDomainExtension;
+import java.lang.annotation.*;
+
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
 
-import java.lang.annotation.*;
+import io.github.dddplus.ext.IDomainExtension;
 
 /**
  * 扩展点，注解在{@link IDomainExtension}之上.
@@ -20,14 +21,14 @@ import java.lang.annotation.*;
 @Inherited
 @Component
 public @interface Extension {
-
     /**
-     * The value may indicate a suggestion for a logical component name,
-     * to be turned into a Spring bean in case of an autodetected component.
+     * The value may indicate a suggestion for a logical component name, to be turned into a Spring bean in case of an
+     * autodetected component.
      *
      * @return the suggested component name, if any
      */
-    @AliasFor(annotation = Component.class, attribute = "value") String value() default "";
+    @AliasFor(annotation = Component.class, attribute = "value")
+    String value() default "";
 
     /**
      * 扩展点编号，bind to {@link Pattern#code()} or {@link Partner#code()}.

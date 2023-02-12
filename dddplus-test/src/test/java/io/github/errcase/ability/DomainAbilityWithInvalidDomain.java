@@ -1,19 +1,19 @@
 package io.github.errcase.ability;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.function.Predicate;
+
+import javax.validation.constraints.NotNull;
+
 import io.github.dddplus.annotation.DomainAbility;
 import io.github.dddplus.runtime.BaseDomainAbility;
 import io.github.dddplus.runtime.Reducer;
 import io.github.dddplus.runtime.registry.mock.ext.IFooExt;
 import io.github.dddplus.runtime.registry.mock.model.FooModel;
-
-import javax.validation.constraints.NotNull;
-import java.util.function.Predicate;
+import lombok.extern.slf4j.Slf4j;
 
 @DomainAbility(domain = "non-exist")
 @Slf4j
 public class DomainAbilityWithInvalidDomain extends BaseDomainAbility<FooModel, IFooExt> {
-
     public String submit(FooModel model) {
         Predicate<Integer> predicate = new Predicate<Integer>() {
             @Override
@@ -35,7 +35,6 @@ public class DomainAbilityWithInvalidDomain extends BaseDomainAbility<FooModel, 
         if (result == null) {
             return null;
         }
-
         return String.valueOf(result);
     }
 

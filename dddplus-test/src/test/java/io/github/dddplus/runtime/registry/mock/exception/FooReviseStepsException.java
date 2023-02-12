@@ -1,12 +1,11 @@
 package io.github.dddplus.runtime.registry.mock.exception;
 
+import java.util.List;
+
 import io.github.dddplus.step.IReviseStepsException;
 import lombok.Setter;
 
-import java.util.List;
-
 public class FooReviseStepsException extends RuntimeException implements IReviseStepsException {
-
     public FooReviseStepsException() {
         super();
     }

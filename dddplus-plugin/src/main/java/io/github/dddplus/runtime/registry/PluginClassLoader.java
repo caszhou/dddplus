@@ -5,14 +5,15 @@
  */
 package io.github.dddplus.runtime.registry;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.net.URL;
 import java.net.URLClassLoader;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Plugin类加载器.
  * <p>
+ * 
  * <pre>
  *     sun.misc.Launcher$AppClassLoader
  *                   |
@@ -32,15 +33,14 @@ final class PluginClassLoader extends URLClassLoader {
     private static final String dddPackage = "io.github.dddplus";
 
     private final ClassLoader jdkClassLoader;
+
     private final ClassLoader containerClassLoader;
 
     PluginClassLoader(URL[] urls, ClassLoader jdkClassLoader, ClassLoader containerClassLoader) {
         super(urls);
-
         for (URL url : urls) {
             addUrl(url); // the classpath
         }
-
         this.jdkClassLoader = jdkClassLoader;
         this.containerClassLoader = containerClassLoader;
     }
@@ -56,7 +56,6 @@ final class PluginClassLoader extends URLClassLoader {
             // 如果类已经加载过，就返回那个已经加载好的类
             return clazz;
         }
-
         // 如果这个类是JDK自己的，就用 JDKClassLoader 加载
         try {
             clazz = jdkClassLoader.loadClass(className);
@@ -67,7 +66,6 @@ final class PluginClassLoader extends URLClassLoader {
             }
         } catch (ClassNotFoundException ignored) {
         }
-
         // 不是JDK本身的类
         if (containerFirstClass(className)) {
             clazz = containerClassLoader.loadClass(className);
@@ -76,7 +74,6 @@ final class PluginClassLoader extends URLClassLoader {
                 return clazz;
             }
         }
-
         // Plugin加载器自己加载
         try {
             // look for classes in the file system(jar)
@@ -90,7 +87,6 @@ final class PluginClassLoader extends URLClassLoader {
             }
         } catch (ClassNotFoundException ignored) {
         }
-
         // 如果Plugin加载器无法加载，fallback to 中台Container加载器
         if (clazz == null) {
             clazz = containerClassLoader.loadClass(className); // might throw ClassNotFoundException
@@ -99,7 +95,6 @@ final class PluginClassLoader extends URLClassLoader {
                 return clazz;
             }
         }
-
         // null
         return clazz;
     }

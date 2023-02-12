@@ -11,7 +11,9 @@ import java.util.List;
 /**
  * A notification is an object that collects reason why specifications not satisfied.
  * <p>
- * <p>google Notification Pattern & Specification Pattern for more details</p>
+ * <p>
+ * google Notification Pattern & Specification Pattern for more details
+ * </p>
  */
 public class Notification {
 
@@ -32,9 +34,12 @@ public class Notification {
     /**
      * Add a reason why this specification not satisfied.
      * <p>
-     * <p>Will filter out duplicated reason under the hood.</p>
+     * <p>
+     * Will filter out duplicated reason under the hood.
+     * </p>
      *
-     * @param reason unsatisfaction reason. if null, will be ignored and return false
+     * @param reason
+     *            unsatisfaction reason. if null, will be ignored and return false
      * @return true if this {@code Notification} changed as a result of the call
      */
     public boolean addReason(String reason) {
@@ -42,14 +47,12 @@ public class Notification {
             // ignore empty reason
             return false;
         }
-
         // duplication check
         for (String r : reasons) {
             if (r.equals(reason)) {
                 return false;
             }
         }
-
         return reasons.add(reason);
     }
 
@@ -83,7 +86,6 @@ public class Notification {
         if (isEmpty()) {
             return null;
         }
-
         return reasons.get(0);
     }
 }

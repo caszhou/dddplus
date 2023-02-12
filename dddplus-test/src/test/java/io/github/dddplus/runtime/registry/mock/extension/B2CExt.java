@@ -1,10 +1,10 @@
 package io.github.dddplus.runtime.registry.mock.extension;
 
 import io.github.dddplus.annotation.Extension;
-import io.github.dddplus.runtime.registry.mock.pattern.B2CPattern;
-import lombok.extern.slf4j.Slf4j;
 import io.github.dddplus.runtime.registry.mock.ext.IFooExt;
 import io.github.dddplus.runtime.registry.mock.model.FooModel;
+import io.github.dddplus.runtime.registry.mock.pattern.B2CPattern;
+import lombok.extern.slf4j.Slf4j;
 
 @Extension(code = B2CPattern.CODE, name = "水平扩展点Bar模式")
 @Slf4j

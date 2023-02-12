@@ -12,7 +12,8 @@ import org.junit.runners.JUnit4;
 import org.junit.runners.model.InitializationError;
 
 public class AloneRunner extends Runner {
-    private static final String CONSTRUCTOR_ERROR_FORMAT = "Custom runner class %s should have a public constructor with signature %s(Class testClass)";
+    private static final String CONSTRUCTOR_ERROR_FORMAT =
+        "Custom runner class %s should have a public constructor with signature %s(Class testClass)";
 
     private Runner realRunner;
 
@@ -25,13 +26,13 @@ public class AloneRunner extends Runner {
         if (AloneRunner.class.isAssignableFrom(realClassRunnerClass)) {
             throw new InitializationError("Dead-loop code");
         }
-
         testCaseClassloader = new AloneClassLoader();
         ClassLoader backupClassLoader = Thread.currentThread().getContextClassLoader();
         Thread.currentThread().setContextClassLoader(testCaseClassloader);
         try {
             Class<?> newTestCaseClass = testCaseClassloader.loadClass(clazz.getName());
-            Class<? extends Runner> realRunnerClass = (Class<? extends Runner>) testCaseClassloader.loadClass(realClassRunnerClass.getName());
+            Class<? extends Runner> realRunnerClass =
+                (Class<? extends Runner>)testCaseClassloader.loadClass(realClassRunnerClass.getName());
             realRunner = buildRunner(realRunnerClass, newTestCaseClass);
         } catch (ReflectiveOperationException e) {
             throw new InitializationError(e);
@@ -53,8 +54,8 @@ public class AloneRunner extends Runner {
         Thread.currentThread().setContextClassLoader(backupClassLoader);
     }
 
-    protected Runner buildRunner(Class<? extends Runner> runnerClass,
-                                 Class<?> testClass) throws ReflectiveOperationException, InitializationError {
+    protected Runner buildRunner(Class<? extends Runner> runnerClass, Class<?> testClass)
+        throws ReflectiveOperationException, InitializationError {
         try {
             return runnerClass.getConstructor(Class.class).newInstance(testClass);
         } catch (NoSuchMethodException e) {

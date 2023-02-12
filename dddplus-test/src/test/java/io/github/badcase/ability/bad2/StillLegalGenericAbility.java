@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 @DomainAbility(domain = FooDomain.CODE)
 @Slf4j
 public class StillLegalGenericAbility extends BaseDomainAbility {
-
     @Override
     public IDomainExtension defaultExtension(IDomainModel model) {
         return null;

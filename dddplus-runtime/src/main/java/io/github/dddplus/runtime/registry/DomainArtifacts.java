@@ -5,23 +5,27 @@
  */
 package io.github.dddplus.runtime.registry;
 
-import io.github.dddplus.ext.IDomainExtension;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import io.github.dddplus.ext.IDomainExtension;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+
 /**
  * 对外输出的领域物件，即核心的领域抽象.
  * <p>
- * <p>方便上层集成，例如：构建配置中心，业务可视化平台等.</p>
- * <p>业务抽象的可视化，在构建业务系统时非常重要：平台能力可以透出，需求传递高效.</p>
+ * <p>
+ * 方便上层集成，例如：构建配置中心，业务可视化平台等.
+ * </p>
+ * <p>
+ * 业务抽象的可视化，在构建业务系统时非常重要：平台能力可以透出，需求传递高效.
+ * </p>
  */
 public class DomainArtifacts {
     private static final DomainArtifacts instance = new DomainArtifacts();
@@ -40,20 +44,23 @@ public class DomainArtifacts {
 
     /**
      * 获取单例的领域物件.
-     *
-     * <p>通过领域物件，获取所有的业务元素：步骤，扩展点等</p>
+     * <p>
+     * 通过领域物件，获取所有的业务元素：步骤，扩展点等
+     * </p>
      */
     public static DomainArtifacts getInstance() {
         return instance;
     }
 
-    private DomainArtifacts() {
-    }
+    private DomainArtifacts() {}
 
     synchronized void export() {
         // domains
         this.domains = new ArrayList<>(InternalIndexer.domainDefMap.size());
-        domains.addAll(InternalIndexer.domainDefMap.values().stream().map(domainDef -> new Domain(domainDef.getCode(), domainDef.getName())).collect(Collectors.toList()));
+        domains.addAll(InternalIndexer.domainDefMap.values()
+            .stream()
+            .map(domainDef -> new Domain(domainDef.getCode(), domainDef.getName()))
+            .collect(Collectors.toList()));
 
         // steps
         this.steps = new HashMap<>();
@@ -61,18 +68,21 @@ public class DomainArtifacts {
             final String activity = entry.getKey();
             this.steps.put(activity, new ArrayList<>());
             for (StepDef stepDef : entry.getValue().values()) {
-                this.steps.get(activity).add(new Step(activity, stepDef.getCode(), stepDef.getName(), stepDef.getTags()));
+                this.steps.get(activity)
+                    .add(new Step(activity, stepDef.getCode(), stepDef.getName(), stepDef.getTags()));
             }
         }
-
         // specifications
         this.specifications = new ArrayList<>(InternalIndexer.specificationDefs.size());
-        specifications.addAll(InternalIndexer.specificationDefs.stream().map(specificationDef -> new Specification(specificationDef.getName(), specificationDef.getTags())).collect(Collectors.toList()));
+        specifications.addAll(InternalIndexer.specificationDefs.stream()
+            .map(specificationDef -> new Specification(specificationDef.getName(), specificationDef.getTags()))
+            .collect(Collectors.toList()));
 
         // extensions
         this.extensions = new ArrayList<>();
         // parse indexer pattern extensions
-        for (Map.Entry<Class<? extends IDomainExtension>, List<PatternDef>> entry : InternalIndexer.sortedPatternMap.entrySet()) {
+        for (Map.Entry<Class<? extends IDomainExtension>, List<PatternDef>> entry : InternalIndexer.sortedPatternMap
+            .entrySet()) {
             final Extension extension = new Extension(entry.getKey());
             for (PatternDef patternDef : entry.getValue()) {
                 extension.getPatterns().add(new Pattern(patternDef.getCode(), patternDef.getName()));
@@ -83,7 +93,6 @@ public class DomainArtifacts {
                     extension.getPartners().add(new Partner(partnerDef.getCode(), partnerDef.getName()));
                 }
             }
-
             this.extensions.add(extension);
         }
         // parse indexer partner extensions and merge with pattern extensions
@@ -96,7 +105,6 @@ public class DomainArtifacts {
                         break;
                     }
                 }
-
                 if (extensionsOfPattern == null) {
                     // this extension is implemented only by Partner
                     final Extension extension = new Extension(ext);
@@ -121,6 +129,7 @@ public class DomainArtifacts {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Domain {
         private String code;
+
         private String name;
     }
 
@@ -131,8 +140,11 @@ public class DomainArtifacts {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Step {
         private String activity;
+
         private String code;
+
         private String name;
+
         private String[] tags;
     }
 
@@ -142,7 +154,9 @@ public class DomainArtifacts {
     @Getter
     public static class Extension {
         private Class<? extends IDomainExtension> ext;
+
         private List<Pattern> patterns;
+
         private List<Partner> partners;
 
         private Extension(Class<? extends IDomainExtension> ext) {
@@ -160,6 +174,7 @@ public class DomainArtifacts {
     @EqualsAndHashCode
     public static class Pattern {
         private String code;
+
         private String name;
     }
 
@@ -171,6 +186,7 @@ public class DomainArtifacts {
     @EqualsAndHashCode
     public static class Partner {
         private String code;
+
         private String name;
     }
 
@@ -181,6 +197,7 @@ public class DomainArtifacts {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Specification {
         private String name;
+
         private String[] tags;
     }
 }

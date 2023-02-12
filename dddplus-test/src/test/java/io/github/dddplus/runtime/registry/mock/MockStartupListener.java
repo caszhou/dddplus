@@ -1,7 +1,8 @@
 package io.github.dddplus.runtime.registry.mock;
 
-import io.github.dddplus.runtime.IStartupListener;
 import org.springframework.stereotype.Component;
+
+import io.github.dddplus.runtime.IStartupListener;
 
 @Component
 public class MockStartupListener implements IStartupListener {
@@ -23,5 +24,4 @@ public class MockStartupListener implements IStartupListener {
     public static int getCalled() {
         return called;
     }
-
 }

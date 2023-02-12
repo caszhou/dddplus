@@ -9,7 +9,6 @@ import java.io.*;
 
 // copied from apache commons-io
 final class FileUtils {
-
     static void copyInputStreamToFile(InputStream source, File destination) throws IOException {
         try {
             FileOutputStream output = openOutputStream(destination);
@@ -48,11 +47,10 @@ final class FileUtils {
         if (count > Integer.MAX_VALUE) {
             return -1;
         }
-        return (int) count;
+        return (int)count;
     }
 
-    private static long copyLarge(InputStream input, OutputStream output, byte[] buffer)
-            throws IOException {
+    private static long copyLarge(InputStream input, OutputStream output, byte[] buffer) throws IOException {
         long count = 0;
         int n;
         while (-1 != (n = input.read(buffer))) {

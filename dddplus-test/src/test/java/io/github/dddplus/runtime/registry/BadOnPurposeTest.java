@@ -1,9 +1,7 @@
 package io.github.dddplus.runtime.registry;
 
-import com.tngtech.archunit.core.importer.ClassFileImporter;
-import io.github.dddplus.ArchitectureEnforcer;
-import io.github.dddplus.testing.AloneRunner;
-import io.github.dddplus.testing.AloneWith;
+import static org.junit.Assert.*;
+
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,14 +9,15 @@ import org.junit.runners.JUnit4;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import com.tngtech.archunit.core.importer.ClassFileImporter;
+
+import io.github.dddplus.ArchitectureEnforcer;
+import io.github.dddplus.testing.AloneRunner;
+import io.github.dddplus.testing.AloneWith;
 
 @RunWith(AloneRunner.class)
 @AloneWith(JUnit4.class)
 public class BadOnPurposeTest {
-
     private ClassPathXmlApplicationContext applicationContext;
 
     @After
@@ -27,7 +26,6 @@ public class BadOnPurposeTest {
             applicationContext.destroy();
             applicationContext = null;
         }
-
         RegistryFactory.validRegistryEntries.clear();
         InternalIndexer.domainDefMap.clear();
         InternalIndexer.domainStepDefMap.clear();
@@ -46,7 +44,9 @@ public class BadOnPurposeTest {
         } catch (AssertionError expected) {
             expected.printStackTrace();
             assertTrue(expected.getMessage().contains("Rule 'ISpecification rule' was violated"));
-            assertTrue(expected.getMessage().contains("<io.github.badcase.specification.SpecificationWithoutAnnotation> is not annotated with @Specification"));
+            assertTrue(expected.getMessage()
+                .contains(
+                    "<io.github.badcase.specification.SpecificationWithoutAnnotation> is not annotated with @Specification"));
         }
     }
 
@@ -56,7 +56,8 @@ public class BadOnPurposeTest {
             applicationContext = new ClassPathXmlApplicationContext("step-emptycode.xml");
             fail();
         } catch (BeanCreationException expected) {
-            assertEquals("io.github.badcase.step.emptycode.EmptyCodeStep stepCode cannot be empty", expected.getCause().getMessage());
+            assertEquals("io.github.badcase.step.emptycode.EmptyCodeStep stepCode cannot be empty",
+                expected.getCause().getMessage());
         }
     }
 
@@ -66,7 +67,8 @@ public class BadOnPurposeTest {
             applicationContext = new ClassPathXmlApplicationContext("step-emptyactivity.xml");
             fail();
         } catch (BeanCreationException expected) {
-            assertEquals("io.github.badcase.step.emptyactivity.EmptyActivityStep activityCode cannot be empty", expected.getCause().getMessage());
+            assertEquals("io.github.badcase.step.emptyactivity.EmptyActivityStep activityCode cannot be empty",
+                expected.getCause().getMessage());
         }
     }
 
@@ -76,7 +78,8 @@ public class BadOnPurposeTest {
             applicationContext = new ClassPathXmlApplicationContext("step-notstep.xml");
             fail();
         } catch (BeanCreationException expected) {
-            assertEquals("io.github.badcase.step.notstep.NotStepButAnnotatedWithStep MUST implement IDomainStep", expected.getCause().getMessage());
+            assertEquals("io.github.badcase.step.notstep.NotStepButAnnotatedWithStep MUST implement IDomainStep",
+                expected.getCause().getMessage());
         }
     }
 
@@ -86,7 +89,8 @@ public class BadOnPurposeTest {
             applicationContext = new ClassPathXmlApplicationContext("ext-notext.xml");
             fail();
         } catch (BeanCreationException expected) {
-            assertEquals("io.github.badcase.ext.NotExtButAnnotatedWithExtension MUST implement IDomainExtension", expected.getCause().getMessage());
+            assertEquals("io.github.badcase.ext.NotExtButAnnotatedWithExtension MUST implement IDomainExtension",
+                expected.getCause().getMessage());
         }
     }
 
@@ -96,7 +100,8 @@ public class BadOnPurposeTest {
             applicationContext = new ClassPathXmlApplicationContext("specification-bad.xml");
             fail();
         } catch (BeanCreationException expected) {
-            assertEquals("io.github.badcase.specification.InvalidSpecification MUST implement ISpecification", expected.getCause().getMessage());
+            assertEquals("io.github.badcase.specification.InvalidSpecification MUST implement ISpecification",
+                expected.getCause().getMessage());
         }
     }
 
@@ -116,7 +121,8 @@ public class BadOnPurposeTest {
             applicationContext = new ClassPathXmlApplicationContext("partner-bad.xml");
             fail();
         } catch (BeanCreationException expected) {
-            assertEquals("io.github.badcase.partner.InvalidPartner MUST implements IIdentityResolver", expected.getCause().getMessage());
+            assertEquals("io.github.badcase.partner.InvalidPartner MUST implements IIdentityResolver",
+                expected.getCause().getMessage());
         }
     }
 
@@ -126,7 +132,8 @@ public class BadOnPurposeTest {
             applicationContext = new ClassPathXmlApplicationContext("policy-bad.xml");
             fail();
         } catch (BeanCreationException expected) {
-            assertEquals("io.github.badcase.policy.InvalidPolicy MUST implements IExtPolicy", expected.getCause().getMessage());
+            assertEquals("io.github.badcase.policy.InvalidPolicy MUST implements IExtPolicy",
+                expected.getCause().getMessage());
         }
     }
 
@@ -136,7 +143,8 @@ public class BadOnPurposeTest {
             applicationContext = new ClassPathXmlApplicationContext("service-bad.xml");
             fail();
         } catch (BeanCreationException expected) {
-            assertEquals("io.github.badcase.service.BadDomainService MUST implement IDomainService", expected.getCause().getMessage());
+            assertEquals("io.github.badcase.service.BadDomainService MUST implement IDomainService",
+                expected.getCause().getMessage());
         }
     }
 
@@ -146,7 +154,8 @@ public class BadOnPurposeTest {
             applicationContext = new ClassPathXmlApplicationContext("ability-bad.xml");
             fail();
         } catch (BeanCreationException expected) {
-            assertEquals("io.github.badcase.ability.bad1.BadAbility MUST extend BaseDomainAbility", expected.getCause().getMessage());
+            assertEquals("io.github.badcase.ability.bad1.BadAbility MUST extend BaseDomainAbility",
+                expected.getCause().getMessage());
         }
     }
 

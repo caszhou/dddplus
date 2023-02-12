@@ -5,21 +5,21 @@
  */
 package io.github.dddplus.runtime.registry;
 
-import io.github.dddplus.ext.IDomainExtension;
-import io.github.dddplus.model.IDomainModel;
-import io.github.dddplus.annotation.Pattern;
-import io.github.dddplus.ext.IIdentityResolver;
-import lombok.Getter;
-import lombok.ToString;
-
-import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.validation.constraints.NotNull;
+
+import io.github.dddplus.annotation.Pattern;
+import io.github.dddplus.ext.IDomainExtension;
+import io.github.dddplus.ext.IIdentityResolver;
+import io.github.dddplus.model.IDomainModel;
+import lombok.Getter;
+import lombok.ToString;
+
 @ToString
 class PatternDef implements IRegistryAware, IIdentityResolver {
-
     @Getter
     private String code;
 
@@ -54,18 +54,19 @@ class PatternDef implements IRegistryAware, IIdentityResolver {
             throw BootstrapException.ofMessage("Pattern.priority must be zero or positive");
         }
         if (!(bean instanceof IIdentityResolver)) {
-            throw BootstrapException.ofMessage(bean.getClass().getCanonicalName(), " MUST implements IIdentityResolver");
+            throw BootstrapException.ofMessage(bean.getClass().getCanonicalName(),
+                " MUST implements IIdentityResolver");
         }
-        this.patternBean = (IIdentityResolver) bean;
+        this.patternBean = (IIdentityResolver)bean;
     }
 
     void registerExtensionDef(ExtensionDef extensionDef) {
         Class<? extends IDomainExtension> extClazz = extensionDef.getExtClazz();
         if (extensionDefMap.containsKey(extClazz)) {
-            throw BootstrapException.ofMessage("Pattern(code=", code, ") can hold ONLY one instance on ", extClazz.getCanonicalName(),
-                    ", existing ", extensionDefMap.get(extClazz).toString(), ", illegal ", extensionDef.toString());
+            throw BootstrapException.ofMessage("Pattern(code=", code, ") can hold ONLY one instance on ",
+                extClazz.getCanonicalName(), ", existing ", extensionDefMap.get(extClazz).toString(), ", illegal ",
+                extensionDef.toString());
         }
-
         extensionDefMap.put(extClazz, extensionDef);
     }
 
@@ -76,5 +77,4 @@ class PatternDef implements IRegistryAware, IIdentityResolver {
     Set<Class<? extends IDomainExtension>> extClazzSet() {
         return extensionDefMap.keySet();
     }
-
 }

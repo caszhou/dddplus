@@ -1,22 +1,22 @@
 package io.github.dddplus.runtime.registry;
 
-import lombok.extern.slf4j.Slf4j;
-import io.github.dddplus.runtime.DDD;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+
+import io.github.dddplus.runtime.DDD;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class PluginClassLoaderTest {
-
     @Test
     public void containerFirstClass() throws MalformedURLException {
-        PluginClassLoader loader = new PluginClassLoader(new URL[]{new File("").toURI().toURL()}, null, null);
+        PluginClassLoader loader = new PluginClassLoader(new URL[] {new File("").toURI().toURL()}, null, null);
         assertTrue(loader.containerFirstClass(DDD.class.getName()));
         assertFalse(loader.containerFirstClass(List.class.getName()));
         assertFalse(loader.containerFirstClass("com.ddd.bp.oms.doo.j.extension.JAntiConcurrentLockExt"));
@@ -43,5 +43,4 @@ public class PluginClassLoaderTest {
             classLoader = classLoader.getParent();
         }
     }
-
 }

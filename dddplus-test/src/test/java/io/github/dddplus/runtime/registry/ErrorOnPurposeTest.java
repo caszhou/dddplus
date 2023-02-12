@@ -1,7 +1,8 @@
 package io.github.dddplus.runtime.registry;
 
-import io.github.dddplus.testing.AloneRunner;
-import io.github.dddplus.testing.AloneWith;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,8 +10,8 @@ import org.junit.runners.JUnit4;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import io.github.dddplus.testing.AloneRunner;
+import io.github.dddplus.testing.AloneWith;
 
 // JUnit在整个project中是一个java进程，InternalIndexer 涉及静态变量，会导致两个单元测试类之间相互影响
 // 最有效直接的办法就是每个测试用例都使用一个独立的classloader，即每个test case都是类隔离的
@@ -18,7 +19,6 @@ import static org.junit.Assert.fail;
 @RunWith(AloneRunner.class)
 @AloneWith(JUnit4.class)
 public class ErrorOnPurposeTest {
-
     private ClassPathXmlApplicationContext applicationContext;
 
     @After
@@ -27,7 +27,6 @@ public class ErrorOnPurposeTest {
             applicationContext.destroy();
             applicationContext = null;
         }
-
         InternalIndexer.domainDefMap.clear();
         InternalIndexer.domainStepDefMap.clear();
         InternalIndexer.domainAbilityDefMap.clear();
@@ -63,7 +62,9 @@ public class ErrorOnPurposeTest {
             applicationContext = new ClassPathXmlApplicationContext("dup-policy.xml");
             fail();
         } catch (BeanCreationException expected) {
-            assertEquals("1 Policy decides only 1 Extension:io.github.errcase.policy.DupTriggerPolicy, ext:io.github.dddplus.runtime.registry.mock.ext.ITrigger", expected.getCause().getMessage());
+            assertEquals(
+                "1 Policy decides only 1 Extension:io.github.errcase.policy.DupTriggerPolicy, ext:io.github.dddplus.runtime.registry.mock.ext.ITrigger",
+                expected.getCause().getMessage());
         }
     }
 
@@ -74,7 +75,8 @@ public class ErrorOnPurposeTest {
             applicationContext = new ClassPathXmlApplicationContext("pattern-invalid.xml");
             fail();
         } catch (BeanCreationException expected) {
-            assertEquals("io.github.errcase.invalidpattern.InvalidPattern MUST implements IIdentityResolver", expected.getCause().getMessage());
+            assertEquals("io.github.errcase.invalidpattern.InvalidPattern MUST implements IIdentityResolver",
+                expected.getCause().getMessage());
         }
     }
 
@@ -117,5 +119,4 @@ public class ErrorOnPurposeTest {
             assertEquals("DomainService domain not found: non-exist", expected.getCause().getMessage());
         }
     }
-
 }

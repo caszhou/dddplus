@@ -8,6 +8,7 @@ package io.github.dddplus.ext;
 /**
  * 可以被动态加载的插件.
  * <p>
+ * 
  * <pre>
  *            IPlugable
  *               |
@@ -16,5 +17,4 @@ package io.github.dddplus.ext;
  * IIdentityResolver    IDomainExtension
  * </pre>
  */
-public interface IPlugable {
-}
+public interface IPlugable {}

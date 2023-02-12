@@ -1,7 +1,9 @@
 package io.github.dddplus.runtime.registry;
 
-import io.github.dddplus.plugin.IContainerContext;
-import io.github.dddplus.runtime.registry.mock.ability.BarDomainAbility;
+import static org.junit.Assert.*;
+
+import java.util.Date;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -10,16 +12,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Date;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import io.github.dddplus.plugin.IContainerContext;
+import io.github.dddplus.runtime.registry.mock.ability.BarDomainAbility;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:spring-test.xml"})
 public class ContainerContextTest {
-
     @Autowired
     private ApplicationContext ctx;
 
@@ -42,5 +40,4 @@ public class ContainerContextTest {
             assertEquals("No qualifying bean of type 'java.util.Date' available", expected.getMessage());
         }
     }
-
 }

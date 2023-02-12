@@ -1,21 +1,21 @@
 package io.github.dddplus.runtime.registry.mock.ability;
 
+import java.util.function.Predicate;
+
+import javax.validation.constraints.NotNull;
+
 import io.github.dddplus.annotation.DomainAbility;
+import io.github.dddplus.runtime.BaseDomainAbility;
 import io.github.dddplus.runtime.Reducer;
+import io.github.dddplus.runtime.registry.mock.domain.FooDomain;
 import io.github.dddplus.runtime.registry.mock.ext.IFooExt;
 import io.github.dddplus.runtime.registry.mock.extension.B2CExt;
 import io.github.dddplus.runtime.registry.mock.model.FooModel;
 import lombok.extern.slf4j.Slf4j;
-import io.github.dddplus.runtime.BaseDomainAbility;
-import io.github.dddplus.runtime.registry.mock.domain.FooDomain;
-
-import javax.validation.constraints.NotNull;
-import java.util.function.Predicate;
 
 @DomainAbility(domain = FooDomain.CODE)
 @Slf4j
 public class BarDomainAbility extends BaseDomainAbility<FooModel, IFooExt> {
-
     public String submit(FooModel model) {
         Predicate<Integer> predicate = new Predicate<Integer>() {
             @Override
@@ -39,11 +39,9 @@ public class BarDomainAbility extends BaseDomainAbility<FooModel, IFooExt> {
                 return v != null && v.equals(B2CExt.RESULT);
             }
         })).execute(model);
-
         if (result == null) {
             return null;
         }
-
         return String.valueOf(result);
     }
 

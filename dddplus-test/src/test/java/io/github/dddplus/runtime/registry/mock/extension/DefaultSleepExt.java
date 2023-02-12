@@ -5,7 +5,6 @@ import io.github.dddplus.runtime.registry.mock.ext.ISleepExt;
 
 @Extension(code = DefaultSleepExt.DefaultCode)
 public class DefaultSleepExt implements ISleepExt {
-
     @Override
     public void sleep(int seconds) {
         try {

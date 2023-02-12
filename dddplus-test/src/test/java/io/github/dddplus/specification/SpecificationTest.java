@@ -1,19 +1,19 @@
 package io.github.dddplus.specification;
 
-import io.github.dddplus.runtime.registry.mock.model.FooModel;
-import io.github.dddplus.specification.mock.B2CMustHavePartnerCode;
-import io.github.dddplus.specification.mock.CannotThrowOOMAndRedecideAtTheSameTime;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+
+import io.github.dddplus.runtime.registry.mock.model.FooModel;
+import io.github.dddplus.specification.mock.B2CMustHavePartnerCode;
+import io.github.dddplus.specification.mock.CannotThrowOOMAndRedecideAtTheSameTime;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class SpecificationTest {
-
     @Test
     public void basic() {
         FooModel fooModel = new FooModel();
@@ -48,5 +48,4 @@ public class SpecificationTest {
             }
         }
     }
-
 }

@@ -1,20 +1,20 @@
 package io.github.dddplus.runtime;
 
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadFactory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.Test;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class NamedThreadFactoryTest {
-
     @Before
     public void setUp() {
         NamedThreadFactory.poolCount.set(0);
@@ -34,7 +34,6 @@ public class NamedThreadFactoryTest {
             });
             thread.start();
         }
-
         waitGroup.await();
 
         // another thread pool with the same prefix
@@ -48,7 +47,6 @@ public class NamedThreadFactoryTest {
             });
             thread.start();
         }
-
         waitGroup1.await();
 
         // pool0
@@ -59,7 +57,6 @@ public class NamedThreadFactoryTest {
             log.info("{} {} {}", i + 1, threadNames, threadNames1);
             assertTrue(threadNames.contains("foo-0-T-" + (i + 1)));
         }
-
         // pool1
         assertEquals(N, threadNames1.size());
         for (int i = 0; i < N; i++) {
@@ -67,5 +64,4 @@ public class NamedThreadFactoryTest {
             assertTrue(threadNames1.contains("foo-1-T-" + (i + 1)));
         }
     }
-
 }

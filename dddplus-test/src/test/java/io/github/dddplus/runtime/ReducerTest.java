@@ -1,18 +1,15 @@
 package io.github.dddplus.runtime;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
+import org.junit.Before;
+import org.junit.Test;
 
 public class ReducerTest {
-
     private List<String> fixture = new ArrayList<>();
 
     @Before
@@ -58,5 +55,4 @@ public class ReducerTest {
         assertNull(reducer.reduce(fixture));
         assertFalse(reducer.shouldStop(fixture));
     }
-
 }

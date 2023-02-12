@@ -5,11 +5,12 @@
  */
 package io.github.dddplus.annotation;
 
-import io.github.dddplus.step.IDomainStep;
+import java.lang.annotation.*;
+
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Service;
 
-import java.lang.annotation.*;
+import io.github.dddplus.step.IDomainStep;
 
 /**
  * 领域活动步骤，注解在{@link IDomainStep}之上.
@@ -21,12 +22,13 @@ import java.lang.annotation.*;
 @Service
 public @interface Step {
     /**
-     * The value may indicate a suggestion for a logical component name,
-     * to be turned into a Spring bean in case of an autodetected component.
+     * The value may indicate a suggestion for a logical component name, to be turned into a Spring bean in case of an
+     * autodetected component.
      *
      * @return the suggested component name, if any
      */
-    @AliasFor(annotation = Service.class, attribute = "value") String value() default "";
+    @AliasFor(annotation = Service.class, attribute = "value")
+    String value() default "";
 
     /**
      * 该步骤的名称.
@@ -36,16 +38,24 @@ public @interface Step {
     /**
      * 该步骤所属分组.
      * <p>
-     * <p>有的步骤非常大，例如：订单商品校验，涉及非常多的逻辑</p>
-     * <p>这时候可以把它拆成多个步骤，但统一到“商品校验”分组里</p>
-     * <p>分组，可以理解为标签：tag</p>
+     * <p>
+     * 有的步骤非常大，例如：订单商品校验，涉及非常多的逻辑
+     * </p>
+     * <p>
+     * 这时候可以把它拆成多个步骤，但统一到“商品校验”分组里
+     * </p>
+     * <p>
+     * 分组，可以理解为标签：tag
+     * </p>
      */
     String[] tags() default {};
 
     /**
      * 该步骤依赖哪些其他步骤.
      * <p>
-     * <p>即，被依赖的步骤先执行，才能执行本步骤</p>
+     * <p>
+     * 即，被依赖的步骤先执行，才能执行本步骤
+     * </p>
      */
     Class<? extends IDomainStep>[] dependsOn() default {};
 }

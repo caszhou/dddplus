@@ -1,10 +1,10 @@
 package io.github.dddplus.specification.mock;
 
+import javax.validation.constraints.NotNull;
+
 import io.github.dddplus.runtime.registry.mock.model.FooModel;
 import io.github.dddplus.specification.ISpecification;
 import io.github.dddplus.specification.Notification;
-
-import javax.validation.constraints.NotNull;
 
 public class CannotThrowOOMAndRedecideAtTheSameTime implements ISpecification<FooModel> {
     public static final String REASON = "不能同时OOM and Redecide";
@@ -17,7 +17,6 @@ public class CannotThrowOOMAndRedecideAtTheSameTime implements ISpecification<Fo
             }
             return false;
         }
-
         return true;
     }
 }

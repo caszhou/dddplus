@@ -5,12 +5,12 @@
  */
 package io.github.dddplus.testing;
 
-import org.junit.runner.Runner;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import org.junit.runner.Runner;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})

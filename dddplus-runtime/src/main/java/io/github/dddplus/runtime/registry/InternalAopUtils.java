@@ -5,11 +5,11 @@
  */
 package io.github.dddplus.runtime.registry;
 
-import org.springframework.aop.framework.AdvisedSupport;
-import org.springframework.aop.support.AopUtils;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+
+import org.springframework.aop.framework.AdvisedSupport;
+import org.springframework.aop.support.AopUtils;
 
 final class InternalAopUtils {
     private InternalAopUtils() {}
@@ -21,8 +21,7 @@ final class InternalAopUtils {
             Class clz = AopUtils.getTargetClass(bean);
             annotation = clz.getAnnotation(annotationClazz);
         }
-
-        return (T) annotation;
+        return (T)annotation;
     }
 
     static Object getTarget(Object bean) throws BootstrapException {
@@ -35,7 +34,7 @@ final class InternalAopUtils {
                 Object dynamicAdvisedInterceptor = h.get(bean);
                 Field advised = dynamicAdvisedInterceptor.getClass().getDeclaredField("advised");
                 advised.setAccessible(true);
-                return ((AdvisedSupport) advised.get(dynamicAdvisedInterceptor)).getTargetSource().getTarget();
+                return ((AdvisedSupport)advised.get(dynamicAdvisedInterceptor)).getTargetSource().getTarget();
             } catch (Exception e) {
                 throw BootstrapException.ofMessage(e.getMessage());
             }
@@ -43,5 +42,4 @@ final class InternalAopUtils {
             throw BootstrapException.ofMessage("Unable to handle the AOP proxy!");
         }
     }
-
 }

@@ -1,14 +1,13 @@
 package io.github.dddplus.runtime.registry;
 
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class DomainArtifactsTest {
-
     @Test
     public void instanceIsSingleton() {
         assertSame(DomainArtifacts.getInstance(), DomainArtifacts.getInstance());
@@ -43,5 +42,4 @@ public class DomainArtifactsTest {
         assertNotEquals(partner1.hashCode(), partner3.hashCode());
         assertFalse(partnerList.contains(partner3));
     }
-
 }

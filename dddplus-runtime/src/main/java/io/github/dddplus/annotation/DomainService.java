@@ -5,10 +5,11 @@
  */
 package io.github.dddplus.annotation;
 
-import io.github.dddplus.model.IDomainService;
+import java.lang.annotation.*;
+
 import org.springframework.stereotype.Service;
 
-import java.lang.annotation.*;
+import io.github.dddplus.model.IDomainService;
 
 /**
  * 领域服务，注解在{@link IDomainService}之上.
@@ -19,7 +20,6 @@ import java.lang.annotation.*;
 @Inherited
 @Service
 public @interface DomainService {
-
     /**
      * 所属业务域.
      *

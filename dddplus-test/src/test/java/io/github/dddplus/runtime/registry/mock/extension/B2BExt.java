@@ -12,18 +12,15 @@ public class B2BExt implements IFooExt {
         if (model.isWillThrowRuntimeException()) {
             throw new RuntimeException("runtime ex on purpuse");
         }
-
         if (model.isWillThrowOOM()) {
             throw new OutOfMemoryError("OOM on purpose");
         }
-
         if (model.isWillSleepLong()) {
             try {
                 Thread.sleep(2 << 10); // 2s
             } catch (InterruptedException e) {
             }
         }
-
         throw new RuntimeException("b2b error on purpose");
     }
 }

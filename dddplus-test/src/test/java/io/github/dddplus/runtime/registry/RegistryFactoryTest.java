@@ -1,11 +1,9 @@
 package io.github.dddplus.runtime.registry;
 
-import io.github.dddplus.annotation.Extension;
-import io.github.dddplus.annotation.Partner;
-import io.github.dddplus.annotation.Step;
-import io.github.dddplus.ext.IPlugable;
-import io.github.dddplus.runtime.registry.mock.extension.FooPartnerExt;
-import io.github.dddplus.runtime.registry.mock.partner.FooPartner;
+import static org.junit.Assert.*;
+
+import java.util.Date;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -13,14 +11,16 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Date;
-
-import static org.junit.Assert.*;
+import io.github.dddplus.annotation.Extension;
+import io.github.dddplus.annotation.Partner;
+import io.github.dddplus.annotation.Step;
+import io.github.dddplus.ext.IPlugable;
+import io.github.dddplus.runtime.registry.mock.extension.FooPartnerExt;
+import io.github.dddplus.runtime.registry.mock.partner.FooPartner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:spring-test.xml"})
 public class RegistryFactoryTest {
-
     @Before
     public void setUp() {
         InternalIndexer.partnerDefPrepared = null;
@@ -84,7 +84,5 @@ public class RegistryFactoryTest {
         }
     }
 
-    private static class UnknownPlugable implements IPlugable {
-    }
-
+    private static class UnknownPlugable implements IPlugable {}
 }

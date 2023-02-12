@@ -32,5 +32,4 @@ public class FooModel implements IDomainModel {
     private boolean sleepExtTimeout;
 
     private int foo;
-
 }

@@ -5,12 +5,6 @@
  */
 package io.github.dddplus.runtime.registry;
 
-import io.github.dddplus.annotation.Partner;
-import io.github.dddplus.plugin.IPlugin;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationContext;
-
-import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -18,11 +12,22 @@ import java.net.URLClassLoader;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import javax.validation.constraints.NotNull;
+
+import org.springframework.context.ApplicationContext;
+
+import io.github.dddplus.annotation.Partner;
+import io.github.dddplus.plugin.IPlugin;
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 业务容器，用于动态加载个性化业务包：Plugin Jar.
  * <p>
- * <p>{@code Container}常驻内存，{@code PluginJar}动态加载：动静分离</p>
  * <p>
+ * {@code Container}常驻内存，{@code PluginJar}动态加载：动静分离
+ * </p>
+ * <p>
+ * 
  * <pre>
  *    +- 1 containerClassLoader
  *    |- 1 jdkClassLoader
@@ -42,13 +47,15 @@ public final class Container {
     private static final Container instance = new Container();
 
     private static final ClassLoader jdkClassLoader = initJDKClassLoader();
+
     private static final ClassLoader containerClassLoader = Container.class.getClassLoader();
+
     private static final ApplicationContext containerApplicationContext = DDDBootstrap.applicationContext();
 
-    private static final Map<String, IPlugin> activePlugins = new HashMap<>(); // has no concurrent scenarios: thread safe
+    private static final Map<String, IPlugin> activePlugins = new HashMap<>(); // has no concurrent scenarios: thread
+                                                                               // safe
 
-    private Container() {
-    }
+    private Container() {}
 
     /**
      * 获取业务容器单例.
@@ -71,13 +78,18 @@ public final class Container {
     /**
      * 加载业务前台jar包.
      *
-     * @param code      {@link IPlugin#getCode()}
-     * @param version   version of the jar
-     * @param jarUrl    Plugin jar URL
-     * @param useSpring jar包里是否需要Spring机制
+     * @param code
+     *            {@link IPlugin#getCode()}
+     * @param version
+     *            version of the jar
+     * @param jarUrl
+     *            Plugin jar URL
+     * @param useSpring
+     *            jar包里是否需要Spring机制
      * @throws Throwable
      */
-    public synchronized void loadPartnerPlugin(@NotNull String code, @NotNull String version, @NotNull URL jarUrl, boolean useSpring) throws Throwable {
+    public synchronized void loadPartnerPlugin(@NotNull String code, @NotNull String version, @NotNull URL jarUrl,
+        boolean useSpring) throws Throwable {
         File localJar = createLocalFile(jarUrl);
         localJar.deleteOnExit();
 
@@ -89,31 +101,37 @@ public final class Container {
     /**
      * 加载业务前台jar包.
      * <p>
-     * <p>如果使用本动态加载，就不要maven里静态引入业务前台jar包依赖了.</p>
+     * <p>
+     * 如果使用本动态加载，就不要maven里静态引入业务前台jar包依赖了.
+     * </p>
      *
-     * @param code      {@link IPlugin#getCode()}
-     * @param version   version of the jar
-     * @param jarPath   jar path
-     * @param useSpring jar包里是否需要Spring机制
+     * @param code
+     *            {@link IPlugin#getCode()}
+     * @param version
+     *            version of the jar
+     * @param jarPath
+     *            jar path
+     * @param useSpring
+     *            jar包里是否需要Spring机制
      * @throws Throwable
      */
-    public synchronized void loadPartnerPlugin(@NotNull String code, @NotNull String version, @NotNull String jarPath, boolean useSpring) throws Throwable {
+    public synchronized void loadPartnerPlugin(@NotNull String code, @NotNull String version, @NotNull String jarPath,
+        boolean useSpring) throws Throwable {
         if (!jarPath.endsWith(".jar")) {
             throw new IllegalArgumentException("Invalid jarPath: " + jarPath);
         }
-
         long t0 = System.nanoTime();
         log.warn("Loading partner:{} useSpring:{}", jarPath, useSpring);
         try {
-            Plugin plugin = new Plugin(code, version, jdkClassLoader, containerClassLoader, containerApplicationContext);
+            Plugin plugin =
+                new Plugin(code, version, jdkClassLoader, containerClassLoader, containerApplicationContext);
             plugin.load(jarPath, useSpring, Partner.class, new ContainerContext(containerApplicationContext));
 
-            Plugin pluginToDestroy = (Plugin) activePlugins.get(code);
+            Plugin pluginToDestroy = (Plugin)activePlugins.get(code);
             if (pluginToDestroy != null) {
                 log.warn("to destroy partner:{} ver:{}", code, plugin.getVersion());
                 pluginToDestroy.onDestroy();
             }
-
             activePlugins.put(plugin.getCode(), plugin); // old plugin will be GC'ed eventually
 
             log.warn("Loaded partner:{}, cost {}ms", jarPath, (System.nanoTime() - t0) / 1000_000);
@@ -134,13 +152,12 @@ public final class Container {
         ClassLoader parent;
         for (parent = ClassLoader.getSystemClassLoader(); parent.getParent() != null; parent = parent.getParent()) {
         }
-
         List<URL> jdkUrls = new ArrayList<>(100);
         try {
             // javaHome: /Library/Java/JavaVirtualMachines/jdk1.8.0_40.jdk/Contents/Home
             String javaHome = System.getProperty("java.home").replace(File.separator + "jre", "");
             // search path of URLs for loading classes and resources
-            URL[] urls = ((URLClassLoader) ClassLoader.getSystemClassLoader()).getURLs();
+            URL[] urls = ((URLClassLoader)ClassLoader.getSystemClassLoader()).getURLs();
             for (URL url : urls) {
                 if (url.getPath().startsWith(javaHome)) {
                     // 只找JDK本身的
@@ -150,7 +167,6 @@ public final class Container {
         } catch (Throwable shouldNeverHappen) {
             log.error("JDKClassLoader", shouldNeverHappen);
         }
-
         return new URLClassLoader(jdkUrls.toArray(new URL[0]), parent);
     }
 }

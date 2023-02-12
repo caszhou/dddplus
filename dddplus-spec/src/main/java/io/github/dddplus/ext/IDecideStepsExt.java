@@ -5,21 +5,23 @@
  */
 package io.github.dddplus.ext;
 
-import io.github.dddplus.model.IDomainModel;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
+
+import io.github.dddplus.model.IDomainModel;
 
 /**
  * 用于编排领域步骤的扩展点.
  */
 public interface IDecideStepsExt extends IDomainExtension {
-
     /**
      * 根据领域模型和领域活动码决定需要执行哪些领域步骤.
      *
-     * @param model        领域模型
-     * @param activityCode 领域活动码
+     * @param model
+     *            领域模型
+     * @param activityCode
+     *            领域活动码
      * @return step code list
      */
     @NotNull

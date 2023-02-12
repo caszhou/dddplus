@@ -1,11 +1,10 @@
 package io.github.dddplus.specification;
 
-import org.junit.Test;
-
 import static org.junit.Assert.*;
 
-public class NotificationTest {
+import org.junit.Test;
 
+public class NotificationTest {
     @Test
     public void basic() {
         Notification notification = Notification.create();
@@ -39,7 +38,6 @@ public class NotificationTest {
         assertEquals(1, notification.reasons().size());
         assertEquals(1, notification.size());
         assertEquals("a", notification.firstReason());
-
     }
 
     @Test
@@ -50,5 +48,4 @@ public class NotificationTest {
         assertFalse(notification.addReason("中国"));
         assertEquals(1, notification.reasons().size());
     }
-
 }

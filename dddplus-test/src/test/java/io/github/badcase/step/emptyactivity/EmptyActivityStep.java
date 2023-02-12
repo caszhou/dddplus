@@ -9,7 +9,6 @@ import io.github.dddplus.runtime.registry.mock.step.SubmitStep;
 public class EmptyActivityStep extends SubmitStep {
     @Override
     public void execute(FooModel model) throws FooException {
-
     }
 
     @Override

@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 @Extension(code = "bar")
 @Slf4j
 public class BarTriggerExt implements ITrigger {
-    
     @Override
     public void beforeInsert(FooModel model) {
         log.info("bar trigger");
@@ -18,5 +17,4 @@ public class BarTriggerExt implements ITrigger {
     public void afterInsert(FooModel model) {
         log.info("after insert: {}", model);
     }
-
 }

@@ -1,14 +1,15 @@
 package io.github.dddplus.runtime.registry.mock.pattern.extension;
 
+import java.util.*;
+import java.util.function.Supplier;
+
+import javax.validation.constraints.NotNull;
+
 import io.github.dddplus.annotation.Extension;
 import io.github.dddplus.ext.IDecideStepsExt;
 import io.github.dddplus.model.IDomainModel;
 import io.github.dddplus.runtime.registry.mock.pattern.B2BPattern;
 import io.github.dddplus.runtime.registry.mock.step.Steps;
-
-import javax.validation.constraints.NotNull;
-import java.util.*;
-import java.util.function.Supplier;
 
 @Extension(code = B2BPattern.CODE)
 public class B2BDecideStepsExt implements IDecideStepsExt {
@@ -20,7 +21,6 @@ public class B2BDecideStepsExt implements IDecideStepsExt {
         if (supplier != null) {
             return supplier.get();
         }
-
         return emptySteps;
     }
 

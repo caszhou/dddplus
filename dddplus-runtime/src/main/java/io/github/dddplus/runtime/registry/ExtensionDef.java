@@ -5,13 +5,13 @@
  */
 package io.github.dddplus.runtime.registry;
 
+import javax.validation.constraints.NotNull;
+
 import io.github.dddplus.annotation.Extension;
 import io.github.dddplus.ext.IDomainExtension;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * 扩展点的内部定义, internal usage only.
@@ -19,7 +19,6 @@ import javax.validation.constraints.NotNull;
 @ToString
 @Slf4j
 public class ExtensionDef implements IRegistryAware, IPrepareAware {
-
     @Getter
     private String code;
 
@@ -32,8 +31,7 @@ public class ExtensionDef implements IRegistryAware, IPrepareAware {
     @Getter
     private IDomainExtension extensionBean;
 
-    public ExtensionDef() {
-    }
+    public ExtensionDef() {}
 
     public ExtensionDef(IDomainExtension extensionBean) {
         this.extensionBean = extensionBean;
@@ -58,9 +56,11 @@ public class ExtensionDef implements IRegistryAware, IPrepareAware {
         if (!(bean instanceof IDomainExtension)) {
             throw BootstrapException.ofMessage(bean.getClass().getCanonicalName(), " MUST implement IDomainExtension");
         }
-        this.extensionBean = (IDomainExtension) bean;
+        this.extensionBean = (IDomainExtension)bean;
         // this.extensionBean might be Xxx$EnhancerBySpringCGLIB if the extension uses AOP
-        for (Class extensionBeanInterfaceClazz : InternalAopUtils.getTarget(this.extensionBean).getClass().getInterfaces()) {
+        for (Class extensionBeanInterfaceClazz : InternalAopUtils.getTarget(this.extensionBean)
+            .getClass()
+            .getInterfaces()) {
             if (extensionBeanInterfaceClazz.isInstance(extensionBean)) {
                 this.extClazz = extensionBeanInterfaceClazz;
 
@@ -69,5 +69,4 @@ public class ExtensionDef implements IRegistryAware, IPrepareAware {
             }
         }
     }
-
 }

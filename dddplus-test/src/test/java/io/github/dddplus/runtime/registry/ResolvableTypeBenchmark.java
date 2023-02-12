@@ -1,15 +1,16 @@
 package io.github.dddplus.runtime.registry;
 
+import org.springframework.core.ResolvableType;
+
 import com.google.caliper.Benchmark;
 import com.google.caliper.api.VmOptions;
 import com.google.caliper.runner.CaliperMain;
-import io.github.dddplus.step.IDomainStep;
+
 import io.github.dddplus.runtime.registry.mock.step.SubmitStepsExec;
-import org.springframework.core.ResolvableType;
+import io.github.dddplus.step.IDomainStep;
 
 @VmOptions({"-Xms4g", "-Xmx4g", "-XX:-TieredCompilation"})
 public class ResolvableTypeBenchmark {
-
     public static void main(String[] args) {
         CaliperMain.main(ResolvableTypeBenchmark.class, args);
     }
@@ -38,7 +39,6 @@ public class ResolvableTypeBenchmark {
                     return stepInterfaceType.getGeneric(1).resolve();
                 }
             }
-
             // should never happen
             return null;
         }

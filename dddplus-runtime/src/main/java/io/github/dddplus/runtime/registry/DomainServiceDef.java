@@ -5,16 +5,15 @@
  */
 package io.github.dddplus.runtime.registry;
 
+import javax.validation.constraints.NotNull;
+
 import io.github.dddplus.annotation.DomainService;
 import io.github.dddplus.model.IDomainService;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotNull;
-
 @ToString
 class DomainServiceDef implements IRegistryAware {
-
     @Getter
     private String domain;
 
@@ -27,9 +26,8 @@ class DomainServiceDef implements IRegistryAware {
         if (!(bean instanceof IDomainService)) {
             throw BootstrapException.ofMessage(bean.getClass().getCanonicalName(), " MUST implement IDomainService");
         }
-
         this.domain = domainService.domain();
-        this.domainServiceBean = (IDomainService) bean;
+        this.domainServiceBean = (IDomainService)bean;
 
         InternalIndexer.index(this);
     }

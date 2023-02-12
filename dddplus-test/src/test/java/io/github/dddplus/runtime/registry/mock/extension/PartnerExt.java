@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PartnerExt implements IFooExt {
     public static final int RESULT = 19;
 
-    //@Resource
+    // @Resource
     private IXxxExtPlugin xxxExtPlugin;
 
     @Override

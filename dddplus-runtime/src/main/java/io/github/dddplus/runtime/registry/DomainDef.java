@@ -5,15 +5,14 @@
  */
 package io.github.dddplus.runtime.registry;
 
+import javax.validation.constraints.NotNull;
+
 import io.github.dddplus.annotation.Domain;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotNull;
-
 @ToString
 class DomainDef implements IRegistryAware {
-
     @Getter
     private String code;
 

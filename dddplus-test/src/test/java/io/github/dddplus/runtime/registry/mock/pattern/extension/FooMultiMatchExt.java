@@ -5,5 +5,4 @@ import io.github.dddplus.runtime.registry.mock.ext.IMultiMatchExt;
 import io.github.dddplus.runtime.registry.mock.pattern.FooPattern;
 
 @Extension(code = FooPattern.CODE)
-public class FooMultiMatchExt implements IMultiMatchExt {
-}
+public class FooMultiMatchExt implements IMultiMatchExt {}

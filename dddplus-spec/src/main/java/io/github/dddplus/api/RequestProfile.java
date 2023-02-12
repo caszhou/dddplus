@@ -5,13 +5,13 @@
  */
 package io.github.dddplus.api;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * 统一的RPC API系统入参，注意与业务入参分开.
@@ -35,23 +35,30 @@ public class RequestProfile implements Serializable {
     /**
      * 与{@code java.util.Locale}里的概念一致：{language}-{country}.
      * <p>
-     * <p>e,g. zh-CN</p>
-     * <p>其中，zh是语言(language)，CN是国家(country)</p>
+     * <p>
+     * e,g. zh-CN
+     * </p>
+     * <p>
+     * 其中，zh是语言(language)，CN是国家(country)
+     * </p>
      */
     private String locale;
 
     /**
      * 时区.
      * <p>
-     * <p>e,g. GMT+8</p>
+     * <p>
+     * e,g. GMT+8
+     * </p>
      */
     private String timezone;
 
     /**
      * 预留的扩展属性.
      * <p>
-     * <p>由consumer/provider自行约定扩展属性的内容</p>
+     * <p>
+     * 由consumer/provider自行约定扩展属性的内容
+     * </p>
      */
     private Map<String, String> ext = new HashMap<>();
-
 }

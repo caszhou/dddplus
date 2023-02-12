@@ -5,22 +5,21 @@
  */
 package io.github.dddplus.runtime.registry;
 
+import javax.validation.constraints.NotNull;
+
 import io.github.dddplus.annotation.Step;
 import io.github.dddplus.step.IDomainStep;
 import lombok.Getter;
 import lombok.ToString;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * 领域步骤的内部定义, internal usage only.
  */
 @ToString
 public class StepDef implements IRegistryAware {
-
     @Getter
     private String activity;
-    
+
     @Getter
     private String code;
 
@@ -38,11 +37,10 @@ public class StepDef implements IRegistryAware {
         Step domainStep = InternalAopUtils.getAnnotation(bean, Step.class);
         this.name = domainStep.name();
         this.tags = domainStep.tags();
-
         if (!(bean instanceof IDomainStep)) {
             throw BootstrapException.ofMessage(bean.getClass().getCanonicalName(), " MUST implement IDomainStep");
         }
-        this.stepBean = (IDomainStep) bean;
+        this.stepBean = (IDomainStep)bean;
         this.activity = this.stepBean.activityCode();
         this.code = this.stepBean.stepCode();
         if (this.activity == null || this.activity.trim().isEmpty()) {
@@ -51,7 +49,6 @@ public class StepDef implements IRegistryAware {
         if (this.code == null || this.code.trim().isEmpty()) {
             throw BootstrapException.ofMessage(bean.getClass().getCanonicalName(), " stepCode cannot be empty");
         }
-
         InternalIndexer.index(this);
     }
 }

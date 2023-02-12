@@ -1,11 +1,10 @@
 package io.github.dddplus.runtime.registry.mock.partner;
 
+import javax.validation.constraints.NotNull;
 
 import io.github.dddplus.annotation.Partner;
 import io.github.dddplus.ext.IIdentityResolver;
 import io.github.dddplus.runtime.registry.mock.model.FooModel;
-
-import javax.validation.constraints.NotNull;
 
 @Partner(code = FooPartner.CODE, name = "BP::foo")
 public class FooPartner implements IIdentityResolver<FooModel> {

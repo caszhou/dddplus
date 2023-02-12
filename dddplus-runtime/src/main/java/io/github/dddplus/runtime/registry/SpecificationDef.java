@@ -5,16 +5,15 @@
  */
 package io.github.dddplus.runtime.registry;
 
+import javax.validation.constraints.NotNull;
+
 import io.github.dddplus.annotation.Specification;
 import io.github.dddplus.specification.ISpecification;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotNull;
-
 @ToString
 class SpecificationDef implements IRegistryAware {
-
     @Getter
     private String name;
 
@@ -32,7 +31,7 @@ class SpecificationDef implements IRegistryAware {
         if (!(bean instanceof ISpecification)) {
             throw BootstrapException.ofMessage(bean.getClass().getCanonicalName(), " MUST implement ISpecification");
         }
-        this.specificationBean = (ISpecification) bean;
+        this.specificationBean = (ISpecification)bean;
 
         InternalIndexer.index(this);
     }

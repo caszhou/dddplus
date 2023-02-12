@@ -1,5 +1,10 @@
 package io.github.dddplus.runtime.registry.mock.step;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
 import io.github.dddplus.annotation.Step;
 import io.github.dddplus.runtime.DDD;
 import io.github.dddplus.runtime.registry.mock.ability.ReviseStepsAbility;
@@ -8,10 +13,6 @@ import io.github.dddplus.runtime.registry.mock.exception.FooReviseStepsException
 import io.github.dddplus.runtime.registry.mock.interceptor.DomainProfiler;
 import io.github.dddplus.runtime.registry.mock.model.FooModel;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 @Step(tags = Steps.Submit.GoodsValidationGroup, dependsOn = FooStep.class)
 @Slf4j
@@ -22,14 +23,12 @@ public class BarStep extends SubmitStep {
     @Override
     public void execute(@NotNull FooModel model) throws FooException {
         log.debug("submit: {}", model);
-
         if (model.isWillSleepLong()) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ignored) {
             }
         }
-
         if (model.isRedecideDeadLoop()) {
             // 故意制造step死循环
             log.debug("dead loop on purpose for step:{}", this.stepCode());
@@ -37,7 +36,6 @@ public class BarStep extends SubmitStep {
             revisedSteps.add(this.stepCode());
             throw new FooReviseStepsException().withSubsequentSteps(revisedSteps);
         }
-
         List<String> revisedSteps = DDD.findAbility(ReviseStepsAbility.class).revisedSteps(model);
         if (revisedSteps != null && !revisedSteps.isEmpty()) {
             log.info("重新编排步骤，增加步骤：{}", revisedSteps);
@@ -45,13 +43,12 @@ public class BarStep extends SubmitStep {
             // 通过异常，来改变后续步骤
             throw new FooReviseStepsException().withSubsequentSteps(revisedSteps);
         }
-
         if (model.isWillRollbackInvalid()) {
             throw new RuntimeException("Will not rollback");
         }
-
         if (model.isWillRollback()) {
-            // 必须抛出FooException，如果抛出RuntimeException，会抛出: java.lang.ClassCastException: java.lang.RuntimeException cannot be cast to runtime.registry.mock.exception.FooException
+            // 必须抛出FooException，如果抛出RuntimeException，会抛出: java.lang.ClassCastException: java.lang.RuntimeException
+            // cannot be cast to runtime.registry.mock.exception.FooException
             throw new FooException(rollbackReason);
         }
     }

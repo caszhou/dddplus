@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 @Extension(code = "foo")
 @Slf4j
 public class FooTriggerExt implements ITrigger {
-
     @Override
     public void beforeInsert(FooModel model) {
         log.info("foo trigger");

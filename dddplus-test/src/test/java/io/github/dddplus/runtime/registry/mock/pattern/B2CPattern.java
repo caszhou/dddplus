@@ -14,7 +14,6 @@ public class B2CPattern implements IIdentityResolver<IDomainModel> {
         if (!(model instanceof FooModel)) {
             return false;
         }
-
-        return ((FooModel) model).isB2c();
+        return ((FooModel)model).isB2c();
     }
 }

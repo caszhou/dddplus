@@ -1,5 +1,27 @@
 package io.github.dddplus.runtime.registry;
 
+import static org.junit.Assert.*;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.RejectedExecutionException;
+
+import javax.annotation.Resource;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.SchedulingTaskExecutor;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import io.github.dddplus.ext.IDecideStepsExt;
 import io.github.dddplus.runtime.DDD;
 import io.github.dddplus.runtime.ExtTimeoutException;
@@ -14,35 +36,17 @@ import io.github.dddplus.runtime.registry.mock.model.FooModel;
 import io.github.dddplus.runtime.registry.mock.partner.FooPartner;
 import io.github.dddplus.runtime.registry.mock.pattern.extension.B2BMultiMatchExt;
 import io.github.dddplus.runtime.registry.mock.service.FooDomainService;
-import io.github.dddplus.runtime.registry.mock.step.*;
+import io.github.dddplus.runtime.registry.mock.step.BarStep;
+import io.github.dddplus.runtime.registry.mock.step.EggStep;
+import io.github.dddplus.runtime.registry.mock.step.Steps;
+import io.github.dddplus.runtime.registry.mock.step.SubmitStep;
 import io.github.dddplus.testing.LogAssert;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.scheduling.SchedulingTaskExecutor;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import javax.annotation.Resource;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.RejectedExecutionException;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:spring-test.xml"})
 @Slf4j
 public class IntegrationTest {
-
     @Resource
     private FooDomainService fooDomainService;
 
@@ -90,7 +94,6 @@ public class IntegrationTest {
         } catch (BootstrapException expected) {
             assertTrue(expected.getMessage().startsWith("duplicated domain ability:"));
         }
-
         // 它没有加DomainAbility注解，是无法找到的
         IllegalDomainAbility illegalDomainAbility = InternalIndexer.findDomainAbility(IllegalDomainAbility.class);
         assertNull(illegalDomainAbility);
@@ -150,7 +153,6 @@ public class IntegrationTest {
         } catch (java.lang.ClassCastException expected) {
             // EggStep$$EnhancerBySpringCGLIB$$21d4da4f cannot be cast to SubmitStep
         }
-
         EggStep eggStep = DDD.getStep(Steps.Cancel.Activity, Steps.Cancel.EggStep);
         eggStep.execute(fooModel);
     }
@@ -188,7 +190,6 @@ public class IntegrationTest {
             BarDomainAbility ability = DDD.findAbility(BarDomainAbility.class);
             ability.throwsEx(fooModel);
         } catch (RuntimeException expected) {
-
         }
     }
 
@@ -290,13 +291,11 @@ public class IntegrationTest {
         for (int i = 0; i < threadCount; i++) {
             tasks.add(new SubmitOrderTask(i, latch, fooModel, fooDomainService));
         }
-
         for (SubmitOrderTask task : tasks) {
             Thread thread = new Thread(task);
             thread.setName("SubmitOrderTask-" + task.idx);
             thread.start();
         }
-
         latch.await();
 
         int rejectN = 0;
@@ -305,15 +304,18 @@ public class IntegrationTest {
                 rejectN++;
             }
         }
-
         assertEquals(threadCount - 10, rejectN);
     }
 
     private static class SubmitOrderTask implements Runnable {
         public int idx;
+
         private CountDownLatch latch;
+
         private FooModel fooModel;
+
         private FooDomainService fooDomainService;
+
         public boolean rejected;
 
         SubmitOrderTask(int idx, CountDownLatch latch, FooModel fooModel, FooDomainService fooDomainService) {
@@ -326,7 +328,6 @@ public class IntegrationTest {
         @Override
         public void run() {
             try {
-
                 fooDomainService.submitOrder(fooModel);
             } catch (RejectedExecutionException expected) {
                 log.info("as expected, thread pool full: {}", expected.getMessage());
@@ -334,7 +335,6 @@ public class IntegrationTest {
             } catch (ExtTimeoutException expected) {
                 assertEquals("timeout:500ms", expected.getMessage());
             }
-
             latch.countDown();
         }
     }
@@ -362,7 +362,8 @@ public class IntegrationTest {
 
         fooModel.setB2c(false);
         // B2BDecideStepsExt
-        List<String> b2bSubmitSteps = DDD.findAbility(DecideStepsAbility.class).decideSteps(fooModel, Steps.Submit.Activity);
+        List<String> b2bSubmitSteps =
+            DDD.findAbility(DecideStepsAbility.class).decideSteps(fooModel, Steps.Submit.Activity);
         assertEquals(3, b2bSubmitSteps.size());
     }
 
@@ -500,7 +501,6 @@ public class IntegrationTest {
         } catch (FooException expected) {
             assertEquals(BarStep.rollbackReason, expected.getMessage());
         }
-
         // BarStep执行时抛异常，确保 FooStep, BazStep 的rollback被调用
         LogAssert.assertContains("foo rollback, cause", "baz rollback for");
     }
@@ -548,27 +548,23 @@ public class IntegrationTest {
                 // B2BPattern
                 assertEquals(1, extension.getPatterns().size());
             }
-
             if (IMultiMatchExt.class == extension.getExt()) {
                 foundExtN++;
 
                 // B2BPattern, FooPattern
                 assertEquals(2, extension.getPatterns().size());
             }
-
             if (IPatternOnlyExt.class == extension.getExt()) {
                 foundPatternOnlyPattern = true;
                 assertEquals(0, extension.getPartners().size());
                 assertEquals(1, extension.getPatterns().size());
             }
-
             if (IPartnerExt.class == extension.getExt()) {
                 foundPartnerOnlyPattern = true;
 
                 assertEquals(0, extension.getPatterns().size());
                 assertEquals(1, extension.getPartners().size()); // 只有 FooPartner 实现了该扩展点
             }
-
             if (IFooExt.class == extension.getExt()) {
                 foundExtN++;
 

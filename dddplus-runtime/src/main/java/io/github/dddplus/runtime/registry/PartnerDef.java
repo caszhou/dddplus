@@ -5,21 +5,21 @@
  */
 package io.github.dddplus.runtime.registry;
 
-import io.github.dddplus.ext.IDomainExtension;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.validation.constraints.NotNull;
+
 import io.github.dddplus.annotation.Partner;
+import io.github.dddplus.ext.IDomainExtension;
 import io.github.dddplus.ext.IIdentityResolver;
 import io.github.dddplus.model.IDomainModel;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotNull;
-import java.util.HashMap;
-import java.util.Map;
-
 @ToString
 class PartnerDef implements IRegistryAware, IPrepareAware, IIdentityResolver {
-
     @Getter
     private String code;
 
@@ -50,20 +50,20 @@ class PartnerDef implements IRegistryAware, IPrepareAware, IIdentityResolver {
         Partner partner = InternalAopUtils.getAnnotation(bean, Partner.class);
         this.code = partner.code();
         this.name = partner.name();
-
         if (!(bean instanceof IIdentityResolver)) {
-            throw BootstrapException.ofMessage(bean.getClass().getCanonicalName(), " MUST implements IIdentityResolver");
+            throw BootstrapException.ofMessage(bean.getClass().getCanonicalName(),
+                " MUST implements IIdentityResolver");
         }
-        this.partnerBean = (IIdentityResolver) bean;
+        this.partnerBean = (IIdentityResolver)bean;
     }
 
     void registerExtensionDef(ExtensionDef extensionDef) {
         Class<? extends IDomainExtension> extClazz = extensionDef.getExtClazz();
         if (extensionDefMap.containsKey(extClazz)) {
-            throw BootstrapException.ofMessage("Partner(code=", code, ") can hold ONLY one instance on ", extClazz.getCanonicalName(),
-                    ", existing ", extensionDefMap.get(extClazz).toString(), ", illegal ", extensionDef.toString());
+            throw BootstrapException.ofMessage("Partner(code=", code, ") can hold ONLY one instance on ",
+                extClazz.getCanonicalName(), ", existing ", extensionDefMap.get(extClazz).toString(), ", illegal ",
+                extensionDef.toString());
         }
-
         extensionDefMap.put(extClazz, extensionDef);
     }
 
@@ -75,5 +75,4 @@ class PartnerDef implements IRegistryAware, IPrepareAware, IIdentityResolver {
     public boolean match(@NotNull IDomainModel model) {
         return partnerBean.match(model);
     }
-
 }

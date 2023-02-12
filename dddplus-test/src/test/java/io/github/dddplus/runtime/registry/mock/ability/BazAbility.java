@@ -1,20 +1,19 @@
 package io.github.dddplus.runtime.registry.mock.ability;
 
-import io.github.dddplus.runtime.registry.mock.ext.IBazExt;
-import lombok.extern.slf4j.Slf4j;
+import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
+
 import io.github.dddplus.annotation.DomainAbility;
 import io.github.dddplus.runtime.BaseDomainAbility;
 import io.github.dddplus.runtime.registry.mock.domain.FooDomain;
+import io.github.dddplus.runtime.registry.mock.ext.IBazExt;
 import io.github.dddplus.runtime.registry.mock.extension.DefaultBazExt;
 import io.github.dddplus.runtime.registry.mock.model.FooModel;
-
-import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
+import lombok.extern.slf4j.Slf4j;
 
 @DomainAbility(domain = FooDomain.CODE, tags = {AbilityTag.bar, AbilityTag.foo})
 @Slf4j
 public class BazAbility extends BaseDomainAbility<FooModel, IBazExt> {
-
     @Resource
     private DefaultBazExt defaultBazExt;
 

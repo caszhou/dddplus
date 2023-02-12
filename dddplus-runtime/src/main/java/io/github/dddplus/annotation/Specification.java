@@ -5,9 +5,9 @@
  */
 package io.github.dddplus.annotation;
 
-import org.springframework.stereotype.Component;
-
 import java.lang.annotation.*;
+
+import org.springframework.stereotype.Component;
 
 /**
  * 业务约束规则，注解在{@link io.github.dddplus.specification.ISpecification}之上.
@@ -18,7 +18,6 @@ import java.lang.annotation.*;
 @Inherited
 @Component
 public @interface Specification {
-
     /**
      * 业务约束名称.
      */
@@ -27,8 +26,9 @@ public @interface Specification {
     /**
      * 该业务约束规则所属标签.
      * <p>
-     * <p>通过标签，对业务约束规则进行归类</p>
+     * <p>
+     * 通过标签，对业务约束规则进行归类
+     * </p>
      */
     String[] tags() default {};
-
 }

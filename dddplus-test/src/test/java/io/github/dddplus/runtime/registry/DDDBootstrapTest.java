@@ -1,9 +1,9 @@
 package io.github.dddplus.runtime.registry;
 
-import io.github.dddplus.runtime.registry.mock.MockStartupListener;
-import io.github.dddplus.testing.AloneRunner;
-import io.github.dddplus.testing.AloneWith;
-import io.github.dddplus.testing.LogAssert;
+import static org.junit.Assert.*;
+
+import java.io.IOException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -11,16 +11,14 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 
-import java.io.IOException;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import io.github.dddplus.runtime.registry.mock.MockStartupListener;
+import io.github.dddplus.testing.AloneRunner;
+import io.github.dddplus.testing.AloneWith;
+import io.github.dddplus.testing.LogAssert;
 
 @RunWith(AloneRunner.class)
 @AloneWith(JUnit4.class)
 public class DDDBootstrapTest {
-
     @Test
     public void reload() throws IOException {
         final String expectedLogEvent = "register applicationContext more than once, ignored!";
@@ -57,5 +55,4 @@ public class DDDBootstrapTest {
 
         applicationContext.close();
     }
-
 }

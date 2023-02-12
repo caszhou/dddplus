@@ -5,8 +5,6 @@
  */
 package io.github.dddplus.runtime.registry;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -14,13 +12,14 @@ import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 final class JarUtils {
-
     private JarUtils() {}
 
-    static Map<Class<? extends Annotation>, List<Class>> loadClassWithAnnotations(
-            String path, List<Class<? extends Annotation>> annotations, String startWith, ClassLoader classLoader) throws Throwable {
+    static Map<Class<? extends Annotation>, List<Class>> loadClassWithAnnotations(String path,
+        List<Class<? extends Annotation>> annotations, String startWith, ClassLoader classLoader) throws Throwable {
         Map<Class<? extends Annotation>, List<Class>> result = new HashMap<>();
         List<String> filteredClassNames = filter(getAllClasses(path), startWith);
         for (String className : filteredClassNames) {
@@ -34,18 +33,15 @@ final class JarUtils {
                     // 该Class没有该注解
                     continue;
                 }
-
                 log.debug("{} has class of {}", annotation, className);
                 List<Class> annotationClassList = result.get(annotation);
                 if (annotationClassList == null) {
                     annotationClassList = new ArrayList<>();
                     result.put(annotation, annotationClassList);
                 }
-
                 annotationClassList.add(clazz);
             }
         }
-
         return result;
     }
 
@@ -53,22 +49,19 @@ final class JarUtils {
         JarFile jar = new JarFile(new File(path));
         Enumeration entries = jar.entries();
         while (entries.hasMoreElements()) {
-            JarEntry entry = (JarEntry) entries.nextElement();
+            JarEntry entry = (JarEntry)entries.nextElement();
             String className = getClassName(entry);
             if (className == null || className.isEmpty()) {
                 // not a class. e,g. META-INF
                 continue;
             }
-
             Class clazz = classLoader.loadClass(className);
             if (!beanType.isAssignableFrom(clazz)) {
                 continue;
             }
-
             // 自己创建实例，而不通过Spring BeanFactory创建
-            return (T) clazz.newInstance();
+            return (T)clazz.newInstance();
         }
-
         // not found
         return null;
     }
@@ -81,7 +74,6 @@ final class JarUtils {
             if (jarName.charAt(0) == 47) {
                 jarName = jarName.substring(1);
             }
-
             jarName = jarName.replace("/", ".");
             return jarName.substring(0, jarName.length() - 6);
         }
@@ -93,13 +85,12 @@ final class JarUtils {
 
         Enumeration entries = jar.entries();
         while (entries.hasMoreElements()) {
-            JarEntry entry = (JarEntry) entries.nextElement();
+            JarEntry entry = (JarEntry)entries.nextElement();
             String className = getClassName(entry);
             if (className != null && className.length() > 0) {
                 classNames.add(className);
             }
         }
-
         return classNames;
     }
 
@@ -107,19 +98,15 @@ final class JarUtils {
         if (startWith == null || startWith.isEmpty()) {
             return names;
         }
-
         List<String> result = new ArrayList(names.size());
         for (String name : names) {
             if (name == null) {
                 continue;
             }
-
             if (name.startsWith(startWith)) {
                 result.add(name);
             }
         }
-
         return result;
     }
-
 }

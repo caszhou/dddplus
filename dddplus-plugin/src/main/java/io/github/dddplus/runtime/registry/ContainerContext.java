@@ -5,15 +5,18 @@
  */
 package io.github.dddplus.runtime.registry;
 
-import io.github.dddplus.plugin.IContainerContext;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.context.ApplicationContext;
 
-import javax.validation.constraints.NotNull;
+import io.github.dddplus.plugin.IContainerContext;
 
 /**
  * 默认的容器上下文实现.
  * <p>
- * <p>有些{@code Plugin}不希望Spring加载，但需要中台的资源(例如：RPC/Redis/MQ)，中台输出受限的Spring容器供使用</p>
+ * <p>
+ * 有些{@code Plugin}不希望Spring加载，但需要中台的资源(例如：RPC/Redis/MQ)，中台输出受限的Spring容器供使用
+ * </p>
  */
 final class ContainerContext implements IContainerContext {
     private final ApplicationContext containerApplicationContext;
